@@ -1,0 +1,219 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<title>RF Calculator v.01 - Ridge Equipment Company</title>
+		
+
+		<!-- <meta http-equiv='refresh' content='1'/>* Keep this in to auto refresh -->
+		<style type="text/css">
+
+			.color-primary-0 { color: #AA5939 }	/* Main Primary color */
+			.color-primary-1 { color: #FFD5C4 }
+			.color-primary-2 { color: #FFAD8D }
+			.color-primary-3 { color: #551F0A }
+			.color-primary-4 { color: #000000 }
+
+			.color-secondary-1-0 { color: #AA7939 }	/* Main Secondary color (1) */
+			.color-secondary-1-1 { color: #FFE6C4 }
+			.color-secondary-1-2 { color: #FFCE8D }
+			.color-secondary-1-3 { color: #55350A }
+			.color-secondary-1-4 { color: #000000 }
+
+			.color-secondary-2-0 { color: #29506D }	/* Main Secondary color (2) */
+			.color-secondary-2-1 { color: #C8E7FF }
+			.color-secondary-2-2 { color: #5F86A4 }
+			.color-secondary-2-3 { color: #092337 }
+			.color-secondary-2-4 { color: #000000 }
+
+			.color-complement-0 { color: #277553 }	/* Main Complement color */
+			.color-complement-1 { color: #C4FFE6 }
+			.color-complement-2 { color: #61AF8D }
+			.color-complement-3 { color: #073A24 }
+			.color-complement-4 { color: #000000 }
+			
+			body {
+				width: 400px;
+				background-color: #C8E7FF;
+				font-family: sans-serif;
+			}
+
+			.items {
+				width: 160px;
+				height: 160px;
+				position: absolute;
+				background-color: #5F86A4;
+				border-radius: 10px;
+				margin-left: 40px;
+				margin-top: 40px;     
+				text-align: center;
+				vertical-align: middle;
+				border: 5px white solid;
+			
+			}
+
+			.moreInfo {
+				width: 230px;
+				height: 80px;
+				font-size: 1.5em;
+				color: #5F86A4;
+
+			}
+
+			.label {
+				font-size: 2.2em;
+				color:   #FFFFFF;
+				position: relative;
+				vertical-align: middle;
+			}
+
+			#phone-outline{
+				width: 900px;
+				height: 1400px;
+				border: 2px #092337 dotted;
+				border-top: 35px black solid;
+				border-left: 5px black solid;
+				border-bottom: 50px black solid;
+				border-right: 5px black solid;
+				border-radius: 20px;
+				background-color: white;
+			}
+
+			
+
+
+		</style>
+
+	</head>
+	<body>
+		<div id="phone-outline">
+		<!--
+		<div className="items" id="antennaDiv"><span class="label" id="antenna-label">Antennas</span></div>
+		<div class="items" id="cableDiv"><span class="label" id="cable-label">Cables</span></div> -->
+		</div>
+
+
+		<!-- Java Script Starts Here -->
+		<script type="text/javascript">
+		
+
+		/* ----- Start of Button Creation and Button Event Handlers ----- */
+		//Element Vars
+		var phone = document.getElementById("phone-outline"); //div that represents phone
+
+
+		//Each Line will create a clickable button that can be moved to the snap locations
+		var buttons = [
+			["Antennas", "antennaDiv", "items", "label"], //[ (lable ID), (Div ID), (Div Class), (Label Class)]
+			["Jumpers", "jumperDiv",  "items",  "label"],
+			["Cables", "cableDiv",  "items",  "label"],
+			["Bias-T", "biasTDiv",  "items",  "label"],
+			["Combiner", "combinerDiv",  "items",  "label"],
+			["BTS", "btsDiv",  "items",  "label"],
+
+		];
+
+		
+
+
+		/* ----- Event Handling Functions ----- */
+		//Drag and Drop (Mouse) 
+		/*
+		var onMouseClick = function(e){
+			var border = this.style.borderColor;
+			var xPos = this.offsetLeft ;
+			var yPos = this.offsetTop;
+			var self = this;
+			
+			this.style.border = "5px black dotted";
+			//console.log("border was added from " + this.id + " and the position is X:" + xPos + " Y:" + yPos)	
+			
+			onmousemove = function(e){
+				self.style.top = e.clientY - 110 +"px";
+				self.style.left = e.clientX - 110 +"px";
+			//	console.log("moving to " + e.clientX + " : " + e.clientY);
+			}
+
+			onmouseup = function(e){
+				self.style.border = "5px white solid";
+				document.onmousemove = "null";
+				//console.log("mouse up ");
+
+			}
+		
+			//console.log("triggered");
+		}
+*/
+
+		//Drag and Drop (Touch)
+		var onTouchPress = function(e){
+			var border = this.style.borderColor;
+			var xPos = this.offsetLeft ;
+			var yPos = this.offsetTop;
+			var self = this;
+			
+			this.style.border = "5px black dotted";
+			//console.log("border was added to " + this.id + " and the position is X:" + xPos + " Y:" + yPos)
+			console.log("touchstart");	
+			
+			ontouchmove = function(e){
+				//var touchPoint = e.changedTouches[0];
+				self.style.top = e.clientY - 110 +"px";
+				self.style.left = e.clientX - 110 +"px";
+				e.preventDefault();
+			console.log("moving to " + touchPoint.clientX + " : " + touchPoint.clientY);
+			}
+
+			ontouchend = function(e){
+				self.style.border = "5px white solid";
+				document.onmousemove = "null";
+				console.log("touchend");
+				e.preventDefault();
+			}
+		
+			
+
+		}
+
+		//Creates buttons and assigns events, classes and ids
+		var buttonMaker = function(buttonArray){
+
+			this.newname = buttonArray[0];
+			this.newid = buttonArray[1];
+			this.classname = buttonArray[2];
+			this.labelClass = buttonArray[3];
+			
+
+			var newelement = document.createElement("DIV");
+			newelement.className = this.classname;
+			newelement.id = this.newid;
+
+			var newlabel = document.createElement("SPAN");
+			newlabel.className = this.labelClass;
+			newlabel.textContent = this.newname;
+			newlabel.id = this.newname;
+			newelement.appendChild(newlabel);
+
+			phone.appendChild(newelement);
+
+			//Event Listeners for touch presses
+			//newelement.addEventListener("mousedown", onMouseClick);
+			newelement.addEventListener("touchstart", onTouchPress);
+			
+		}
+
+
+
+		
+		//creating buttons here
+		for ( i = 0; i < buttons.length ; i++){
+			buttonMaker(buttons[i]);
+			var self = document.getElementById(buttons[i][1]);
+			console.log("i am " + self.id);
+			self.style.top = 50 + i * 200 + "px";
+			console.log("height = " + self.offsetHeight + "ypos = " + self.offsetTop);
+
+		}
+
+		</script>
+	</body>
+</html>
